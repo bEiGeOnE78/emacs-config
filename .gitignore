@@ -1,0 +1,44 @@
+# Emacs temporary and generated files
+*~
+\#*\#
+.#*
+auto-save-list/
+*.elc
+.lsp-session-v1
+recentf
+bookmarks
+.org-id-locations
+org-roam.db
+tramp
+url/
+transient/
+eshell/
+eln-cache/
+
+# Package manager files
+elpa/
+.emacs.d/elpa/
+
+# Backup files
+*.bak
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Theme directories (git repositories)
+themes/dracula/
+themes/eldritch-emacs/
