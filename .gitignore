@@ -41,4 +41,4 @@ Thumbs.db
 
 # Theme directories (git repositories)
 themes/dracula/
-themes/eldritch-emacs/
+# Note: eldritch-emacs is now a git submodule, not ignored

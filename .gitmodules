@@ -1,0 +1,3 @@
+[submodule "themes/eldritch-emacs"]
+	path = themes/eldritch-emacs
+	url = https://github.com/Syonv/eldritch-emacs.git
