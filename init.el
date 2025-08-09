@@ -21,7 +21,13 @@
    (message "Tree-sitter packages unavailable, using fallback configuration: %s" err)
    (require 'config-treesitter-fallback)))
 
-(require 'config-proxy)
+;; (require 'config-proxy)
+
+;; Try to load Claude configuration, fallback gracefully if packages unavailable
+(condition-case err
+    (require 'config-claude)
+  (error 
+   (message "Claude packages unavailable, skipping Claude configuration: %s" err)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
