@@ -47,6 +47,14 @@
   :config
   (which-key-mode))
 
+(setq dictionary-server "dict.org")
+
+;; Manditory, as the dictionary misbehaves!
+(setq switch-to-buffer-obey-display-actions t)
+(add-to-list 'display-buffer-alist
+	     '("^\\*Dictonary\\*" display-buffer-in-side-window
+	       (side . right)
+	       (window-width . 0.50)))
 ;;------------------------------------------------------------------------------
 ;; Export module
 ;;------------------------------------------------------------------------------

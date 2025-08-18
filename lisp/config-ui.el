@@ -1,6 +1,7 @@
 ;; User Interface
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(setq ring-bell-function 'ignore)
 
 ;;------------------------------------------------------------------------------
 ;; Font Configuration
@@ -53,6 +54,7 @@
 
 ;; Global key binding for manual reading mode toggle
 (global-set-key (kbd "C-c r") 'my/reading-mode)
+
 ;;------------------------------------------------------------------------------
 ;; Dashboard
 ;;------------------------------------------------------------------------------
@@ -85,5 +87,31 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/dracula")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/eldritch-emacs")
 (load-theme 'eldritch t)
+
+;;------------------------------------------------------------------------------
+;; Programming
+;;------------------------------------------------------------------------------
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Custom faces for rainbow-delimiters
+(custom-set-faces
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "#8BE9FD"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "#50FA7B"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "#FFB86C"))))
+ '(rainbow-delimiters-depth-4-face ((t (:foreground "#FF79C6"))))
+ '(rainbow-delimiters-depth-5-face ((t (:foreground "#BD93F9"))))
+ '(rainbow-delimiters-depth-6-face ((t (:foreground "#FF5555"))))
+ '(rainbow-delimiters-depth-7-face ((t (:foreground "#F1FA8C"))))
+ '(rainbow-delimiters-depth-8-face ((t (:foreground "#6272A4"))))
+ '(rainbow-delimiters-depth-9-face ((t (:foreground "#E6E6E6")))))
+
+;;------------------------------------------------------------------------------
+;; Status Line
+;;------------------------------------------------------------------------------
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 
 (provide 'config-ui)

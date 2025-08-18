@@ -24,6 +24,8 @@
   :init
   ;; Set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
+  :config
+  (setq lsp-enable-folding t)
   :hook 
   ;; Enable LSP for specific modes
   ((c-mode . lsp-deferred)
@@ -33,28 +35,30 @@
    (matlab-mode . lsp-deferred)
    ;; Enable which-key integration for LSP commands
    (lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred)
-  :config
+  :commands (lsp lsp-deferred))
+
+(setq hs-set-up-overlay t)
+  ;; :config
   ;; Performance optimizations
-  (setq lsp-completion-provider :none) ;; Use corfu/company instead
-  (setq lsp-idle-delay 0.1)
-  (setq lsp-log-io nil) ;; Disable logging for better performance
-  (setq lsp-keep-workspace-alive nil)
-  (setq lsp-enable-symbol-highlighting t)
-  (setq lsp-enable-on-type-formatting nil)
-  (setq lsp-signature-auto-activate nil)
-  (setq lsp-signature-render-documentation nil)
-  (setq lsp-eldoc-hook nil)
-  (setq lsp-modeline-code-actions-enable nil)
-  (setq lsp-modeline-diagnostics-enable nil)
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-semantic-tokens-enable nil)
-  (setq lsp-enable-folding nil)
-  (setq lsp-enable-imenu nil)
-  (setq lsp-enable-snippet nil)
-  ;; File watching settings
-  (setq lsp-file-watch-threshold 2000)
-  (setq lsp-auto-guess-root nil))
+  ;; (setq lsp-completion-provider :none) ;; Use corfu/company instead
+  ;; (setq lsp-idle-delay 0.1)
+  ;; (setq lsp-log-io nil) ;; Disable logging for better performance
+  ;; (setq lsp-keep-workspace-alive nil)
+  ;; (setq lsp-enable-symbol-highlighting t)
+  ;; (setq lsp-enable-on-type-formatting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+  ;; (setq lsp-signature-render-documentation nil)
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-modeline-code-actions-enable nil)
+  ;; (setq lsp-modeline-diagnostics-enable nil)
+  ;; (setq lsp-headerline-breadcrumb-enable nil)
+  ;; (setq lsp-semantic-tokens-enable nil)
+  ;; (setq lsp-enable-folding nil)
+  ;; (setq lsp-enable-imenu nil)
+  ;; (setq lsp-enable-snippet nil)
+  ;; ;; File watching settings
+  ;; (setq lsp-file-watch-threshold 2000)
+  ;; (setq lsp-auto-guess-root nil))
 
 ;;----------------------------------------------------------------------------
 ;; LSP UI - Enhanced User Interface
@@ -114,21 +118,48 @@
                       :major-modes '(lua-mode)
                       :server-id 'lua-language-server))))
 
-;; MATLAB
-(use-package matlab
-  :ensure matlab-mode
-  :mode "\\.m\\'"
+;; Python
+(use-package python
+  :ensure nil
+  :mode ("\\.py\\'" . python-mode)
+  :hook (python-mode . lsp-deferred))
+
+(use-package flymake-ruff
+  :ensure t
+  :hook (python-mode . flymake-ruff-load))
+
+;; Go
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :hook ((go-mode . lsp-deferred)
+	 (before-save . lsp-format-buffer)
+	 (before-save . lsp-organize-imports))
   :config
-  ;; Basic MATLAB mode configuration
-  (setq matlab-indent-function-body t)
-  (setq matlab-verify-on-save-flag nil)
-  ;; Configure MATLAB Language Server if available
-  (with-eval-after-load 'lsp-mode
-    (add-to-list 'lsp-language-id-configuration '(matlab-mode . "matlab"))
-    (lsp-register-client
-     (make-lsp-client :new-connection (lsp-stdio-connection "matlab-language-server")
-                      :major-modes '(matlab-mode)
-                      :server-id 'matlab-language-server))))
+  (setq gofmt-command "goimports"))
+
+;; DAP Mode
+;; (use-package dap-mode
+;;   :ensure t
+;;   :config
+;;   (require 'dap-go)
+;;   (dap-go-setup))
+
+;; gopls specific settings
+(lsp-register-custom-settings
+ '(("gopls.completeUnimported" t t)
+   ("gopls.staticcheck" t t)
+   ("gopls.usePlaceholders" t t)
+   ("gopls.analyses.unusedparams" t t)
+   ("gopls.analyses.shadow" t t)
+   ("gopls.analyses.fieldalignment" t t)))
+
+;; Performance tuning
+(setq lsp-gopls-server-path "gopls"
+      lsp-gopls-server-args '("-remote=auto")
+      lsp-gopls-complete-unimported t
+      lsp-gopls-use-placeholders t
+      lsp-gopls-staticcheck t)
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
