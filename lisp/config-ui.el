@@ -1,7 +1,12 @@
-;; User Interface
+;; User Interface  -*- lexical-binding: t; -*-
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (setq ring-bell-function 'ignore)
+(setq-default truncate-lines t)
+
+;; Better scrolling behavior
+(setq scroll-conservatively 101)
+(setq scroll-margin 4)
 
 ;;------------------------------------------------------------------------------
 ;; Font Configuration
@@ -9,7 +14,7 @@
 (set-face-attribute 'default nil
                     :font "JetBrainsMono Nerd Font"
                     :weight 'semi-bold
-                    :height 140) ; 14 point = 140 in height units
+                    :height 120) ; 14 point = 140 in height units
 (use-package display-line-numbers
   :ensure nil
   :hook
@@ -115,3 +120,8 @@
   :hook (after-init . doom-modeline-mode))
 
 (provide 'config-ui)
+
+
+
+
+

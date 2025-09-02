@@ -11,4 +11,8 @@
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
+(use-package org-bullets
+  :ensure t
+  :hook (org-mode . org-bullets-mode))
+
 (provide 'config-orgmode)

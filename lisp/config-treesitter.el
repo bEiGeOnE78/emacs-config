@@ -21,7 +21,7 @@
 (setq treesit-language-source-alist
       '((bash "https://github.com/tree-sitter/tree-sitter-bash")
 	(c "http://github.com/tree-sitter/tree-sitter-c")
-	;; (c++ "http://github.com/tree-sitter/tree-sitter-cpp")
+	(cpp "http://github.com/tree-sitter/tree-sitter-cpp")
         (cmake "https://github.com/uyha/tree-sitter-cmake")
         (css "https://github.com/tree-sitter/tree-sitter-css")
         (elisp "https://github.com/Wilfred/tree-sitter-elisp")
@@ -47,7 +47,7 @@
 (setq major-mode-remap-alist
       '((bash-mode . bash-ts-mode)
         (c-mode . c-ts-mode)
-        ;; (c++-mode . c++-ts-mode)
+        (cpp-mode . cpp-ts-mode)
         (cmake-mode . cmake-ts-mode)
         (conf-toml-mode . toml-ts-mode)
         (css-mode . css-ts-mode)
@@ -57,7 +57,6 @@
         (json-mode . json-ts-mode)
         (lua-mode . lua-ts-mode)
         (python-mode . python-ts-mode)
-        (rust-mode . rust-ts-mode)
         (typescript-mode . typescript-ts-mode)
         (yaml-mode . yaml-ts-mode)))
 
@@ -71,6 +70,11 @@
 
 (use-package treesit-fold-indicators
   :load-path "/home/vader/.emacs.d/elpa/treesit-fold-0.2.1")
+
+(with-eval-after-load 'treesit-fold
+  (require 'treesit-fold-level)
+  (treesit-fold-level-setup-keys))
+
 ;;----------------------------------------------------------------------------
 ;; Export module
 ;;----------------------------------------------------------------------------

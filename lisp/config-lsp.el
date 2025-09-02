@@ -26,7 +26,7 @@
   (setq lsp-keymap-prefix "C-c l")
   :config
   (setq lsp-enable-folding t)
-  :hook 
+  :hook
   ;; Enable LSP for specific modes
   ((c-mode . lsp-deferred)
    (c++-mode . lsp-deferred)
@@ -96,6 +96,15 @@
   (setq lsp-clangd-binary-path "clangd"))
 
 ;; Rust - rust-analyzer
+(use-package rust-mode
+  :ensure t
+  :init
+  (setq rust-mode-treesitter-derive t))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+  
 (use-package rustic
   :ensure t
   :defer t
@@ -122,11 +131,13 @@
 (use-package python
   :ensure nil
   :mode ("\\.py\\'" . python-mode)
-  :hook (python-mode . lsp-deferred))
+  :hook (python-ts-mode . (lambda ()
+			    (require 'lsp-mode)
+			    (lsp-deferred))))
 
 (use-package flymake-ruff
   :ensure t
-  :hook (python-mode . flymake-ruff-load))
+  :hook (python-ts-mode . flymake-ruff-load))
 
 ;; Go
 (use-package go-mode
@@ -139,11 +150,37 @@
   (setq gofmt-command "goimports"))
 
 ;; DAP Mode
-;; (use-package dap-mode
-;;   :ensure t
-;;   :config
-;;   (require 'dap-go)
-;;   (dap-go-setup))
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode
+  :commands dap-debug
+  :hook ((python-mode python-ts-mode) . dap-mode)
+  :config
+  ;; Enable dap-ui for a better debugging experience
+  (dap-ui-mode 1)
+  ;; Enable tooltip on hover
+  (dap-tooltip-mode 1)
+  ;; Use tooltips for mouse hover
+  (tooltip-mode 1)
+  ;; Enable dap-ui controls
+  (dap-ui-controls-mode 1)
+  :bind
+  (:map dap-mode-map
+	("<f5>" . dap-debug)
+	("<f9>" . dap-breakpoint-toggle)
+	("<f10>" . dap-next)
+	("<f11>" . dap-step-in)
+	("<f12>" . dap-step-out)))
+
+(use-package dap-python
+  :ensure nil
+  :after dap-mode
+  :config
+  ;; Set the Python interpreter and debugpy path
+  (setq dap-python-debugger 'debugpy
+	dap-python-executable "~/.local/share/BVTool/Photo Tool/photo-env/bin/python"))
+  ;; (require 'dap-go)
+  ;; (dap-go-setup))
 
 ;; gopls specific settings
 (lsp-register-custom-settings
